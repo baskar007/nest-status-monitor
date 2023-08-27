@@ -73,18 +73,21 @@ var addTimestamp = function(point) {
 
 var cpuDataset = [Object.create(defaultDataset)];
 var memDataset = [Object.create(defaultDataset)];
+var sysMemDataset = [Object.create(defaultDataset)];
 var loadDataset = [Object.create(defaultDataset)];
 var responseTimeDataset = [Object.create(defaultDataset)];
 var rpsDataset = [Object.create(defaultDataset)];
 
 var cpuStat = document.getElementById('cpuStat');
 var memStat = document.getElementById('memStat');
+var sysMemStat = document.getElementById('sysMemStat');
 var loadStat = document.getElementById('loadStat');
 var responseTimeStat = document.getElementById('responseTimeStat');
 var rpsStat = document.getElementById('rpsStat');
 
 var cpuChartCtx = document.getElementById('cpuChart');
 var memChartCtx = document.getElementById('memChart');
+var sysMemChartCtx = document.getElementById('sysMemChart');
 var loadChartCtx = document.getElementById('loadChart');
 var responseTimeChartCtx = document.getElementById('responseTimeChart');
 var rpsChartCtx = document.getElementById('rpsChart');
@@ -92,6 +95,7 @@ var statusCodesChartCtx = document.getElementById('statusCodesChart');
 
 var cpuChart = createChart(cpuChartCtx, cpuDataset);
 var memChart = createChart(memChartCtx, memDataset);
+var sysMemChart = createChart(sysMemChartCtx, sysMemDataset);
 var loadChart = createChart(loadChartCtx, loadDataset);
 var responseTimeChart = createChart(responseTimeChartCtx, responseTimeDataset);
 var rpsChart = createChart(rpsChartCtx, rpsDataset);
@@ -116,6 +120,7 @@ statusCodesChart.data.datasets.forEach(function(dataset, index) {
 var charts = [
   cpuChart,
   memChart,
+  sysMemChart,
   loadChart,
   responseTimeChart,
   rpsChart,
@@ -157,6 +162,16 @@ socket.on('esm_start', function(data) {
   if (lastOsMetric) {
     memStat.textContent = lastOsMetric.memory.toFixed(1) + 'MB';
   }
+
+  sysMemStat.textContent = '0.0GB';
+  if (lastOsMetric) {
+    sysMemStat.textContent = lastOsMetric.freemem.toFixed(1) + 'GB';
+  }
+
+  sysMemChart.data.datasets[0].data = data[defaultSpan].os.map(function(point) {
+    return point.freemem;
+  });
+  sysMemChart.data.labels = data[defaultSpan].os.map(addTimestamp);
 
   memChart.data.datasets[0].data = data[defaultSpan].os.map(function(point) {
     return point.memory;
@@ -263,6 +278,12 @@ socket.on('esm_stats', function(data) {
       memStat.textContent = os.memory.toFixed(1) + 'MB';
       memChart.data.datasets[0].data.push(os.memory);
       memChart.data.labels.push(os.timestamp);
+    }
+
+    if (os) {
+      sysMemStat.textContent = os.freemem.toFixed(1) + 'GB';
+      sysMemChart.data.datasets[0].data.push(os.freemem);
+      sysMemChart.data.labels.push(os.timestamp);
     }
 
     loadStat.textContent = '0';

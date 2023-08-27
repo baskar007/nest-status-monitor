@@ -55,6 +55,8 @@ export class StatusMonitoringService {
       stat.memory = stat.memory / 1024 / 1024;
       stat.load = os.loadavg();
       stat.timestamp = Date.now();
+      stat.freemem = os.freemem() / 1024 / 1024 / 1024;
+      stat.totalmem = os.totalmem() / 1024 / 1024 / 1024;
 
       span.os.push(stat);
       if (

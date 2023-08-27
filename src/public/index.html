@@ -13,10 +13,12 @@
 <body class="{{bodyClasses}}">
     <div class="content">
         <div class="header">
-            <b>{{title}}</b>
-            <div id="span-controls" class="span-controls">
-            </div>
+            <img class="logo" src="{{logo}}" />
+            <h4>{{title}}</h4>
+            <div id="span-controls" class="span-controls"></div>
+            <div class="clear"></div>
         </div>
+        <div class="clear"></div>
         <div class="container cpu">
             <div class="stats-column">
                 <h5>CPU Usage</h5>
@@ -33,6 +35,15 @@
             </div>
             <div class="chart-container">
                 <canvas id="memChart" width="200" height="100"></canvas>
+            </div>
+        </div>
+        <div class="container mem">
+            <div class="stats-column">
+                <h5>System Free Memory</h5>
+                <h1 id="sysMemStat">- %</h1>
+            </div>
+            <div class="chart-container">
+                <canvas id="sysMemChart" width="200" height="100"></canvas>
             </div>
         </div>
         <div class="container load">
@@ -87,7 +98,7 @@
             {{/each}}
         </div>
         <div class="footer">
-            <p>Made with &#9829; with Socket.io & Chart.js</p>
+            <!-- <p>Made with &#9829; with Socket.io & Chart.js</p> -->
         </div>
     </div>
     <script>

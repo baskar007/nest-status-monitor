@@ -55,7 +55,7 @@ const statusMonitorConfig: StatusMonitorConfiguration = {
 };
 
 @Module({
-  imports: [StatusMonitorModule.setUp(statusMonitorConfig)],
+  imports: [StatusMonitorModule.forRoot(statusMonitorConfig)],
   controllers: [AppController, HealthController],
   providers: [AppService],
 })

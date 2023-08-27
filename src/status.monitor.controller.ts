@@ -28,6 +28,7 @@ export class StatusMonitorController {
     this.data = {
       title: config.pageTitle,
       port: config.port,
+      logo: config.logo,
       bodyClasses: bodyClasses,
       script: fs.readFileSync(
         path.join(__dirname, '../src/public/javascripts/app.js'),
