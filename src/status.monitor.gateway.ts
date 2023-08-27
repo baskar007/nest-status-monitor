@@ -7,7 +7,7 @@ import {
 import { StatusMonitoringService } from './status.monitoring.service';
 import { Inject, forwardRef } from '@nestjs/common';
 
-@WebSocketGateway()
+@WebSocketGateway({ namespace: 'health' })
 export class StatusMonitorGateway implements OnGatewayConnection {
   @WebSocketServer()
   server;

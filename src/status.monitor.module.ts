@@ -27,7 +27,7 @@ export class StatusMonitorModule {
       .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 
-  static setUp(config: StatusMonitorConfiguration): DynamicModule {
+  static forRoot(config: StatusMonitorConfiguration): DynamicModule {
     return {
       module: StatusMonitorModule,
       providers: [
@@ -40,6 +40,7 @@ export class StatusMonitorModule {
         HealthCheckService,
       ],
       controllers: [StatusMonitorController.forRoot(config.path)],
+      exports: [HealthCheckService, StatusMonitorGateway, StatusMonitoringService, ],
     };
   }
 }
